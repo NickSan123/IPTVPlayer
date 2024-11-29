@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationId>com.nicksan.iptvplayer</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AndroidUseAapt2>True</AndroidUseAapt2>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AndroidUseAapt2>False</AndroidUseAapt2>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\layout\activity_channel_add.xml" />
+    <None Remove="Resources\layout\channel_item.xml" />
+    <None Remove="Resources\menu\menu_channel_edit.xml" />
+    <None Remove="Resources\menu\menu_main.xml" />
+    <None Remove="Resources\xml\network_security_config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer" Version="2.19.1" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.Media2" Version="2.19.1" />
+    <PackageReference Include="Xam.Plugins.Android.ExoPlayer.SmoothStreaming" Version="2.19.1" />
+    <PackageReference Include="Xamarin.Android.Glide" Version="4.16.0.10" />
+    <PackageReference Include="Xamarin.AndroidX.Sqlite" Version="2.4.0.9" />
+  </ItemGroup>
+</Project>
