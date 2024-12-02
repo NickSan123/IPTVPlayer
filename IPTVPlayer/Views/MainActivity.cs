@@ -44,7 +44,7 @@ namespace IPTVPlayer.Views
             try
             {
                 var preferences = new SharedPreferencesHelper();
-                var ultimo_canal = preferences.GetInt("ultimo_canal", 0);
+                var ultimo_canal = preferences.GetString("ultimo_canal");
 
                 var primeira = preferences.GetBool("primeira_configuracao", true);
 
@@ -65,7 +65,7 @@ namespace IPTVPlayer.Views
                     preferences.SaveBool("primeira_configuracao", false);
                 }
 
-                if (ultimo_canal > 0)
+                if (string.IsNullOrEmpty(ultimo_canal))
                 {
                     var canal = canalViewModel.LoadCanais(ultimo_canal);
 

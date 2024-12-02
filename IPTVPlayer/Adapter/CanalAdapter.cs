@@ -1,10 +1,8 @@
 ﻿using Android.Content;
 using Android.Views;
-using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Bumptech.Glide;
 using IPTVPlayer.Models;
-using IPTVPlayer.ViewModels;
 using IPTVPlayer.Views;
 
 namespace IPTVPlayer.Adapter
@@ -31,18 +29,21 @@ namespace IPTVPlayer.Adapter
             {
                 var canal = _canais[viewHolder.BindingAdapterPosition];
 
-
-
                 OpenCanalPlayerActivity(canal); // Abrindo a activity de player com o canal
             };
             // Configurando clique longo
             itemView.LongClick += (sender, e) =>
             {
-                if (viewHolder.BindingAdapterPosition != RecyclerView.NoPosition)
-                {
-                    var canal = _canais[viewHolder.BindingAdapterPosition];
-                    _onCanalClicked(canal);
-                }
+
+                var intent = new Intent(_context, typeof(ChannelAddActivity)); // CanalPlayerActivity será a Activity de player
+                var canal = _canais[viewHolder.BindingAdapterPosition];
+                // Passa o canal selecionado para a tela de edição
+                intent.PutExtra("canal_id", canal.Id);
+                intent.PutExtra("canal_nome", canal.Nome);
+                intent.PutExtra("canal_foto", canal.UrlImagem);
+                intent.PutExtra("canal_url", canal.UrlStream);
+
+                _context.StartActivity(intent);
             };
 
             return viewHolder;

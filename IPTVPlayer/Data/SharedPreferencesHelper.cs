@@ -32,10 +32,7 @@ namespace IPTVPlayer.Data
         }
 
         // Recuperar um dado do SharedPreferences
-        public string GetString(string key, string defaultValue = "")
-        {
-            return _sharedPreferences.GetString(key, defaultValue);
-        }
+        public string GetString(string key, string defaultValue = "") => _sharedPreferences.GetString(key, defaultValue);
         public int GetInt(string key, int defaultValue = 0)
         {
             return _sharedPreferences.GetInt(key, defaultValue);

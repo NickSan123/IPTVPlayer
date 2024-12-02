@@ -38,8 +38,8 @@ public class ChannelAddActivity : Activity
         {
             ActionBar.Title = "Atualizar Canal: " + _canalId;
             nomeCanalEditText.Text = canalNome;
-            urlStreamEditText.Text = canalFoto;
-            urlImagemEditText.Text = canalUrl;
+            urlStreamEditText.Text = canalUrl;
+            urlImagemEditText.Text = canalFoto;
         }
         else
             ActionBar.Title = "Novo Canal";

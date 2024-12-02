@@ -1,11 +1,15 @@
-﻿using IPTVPlayer.Data;
+﻿using CommunityToolkit.Mvvm.Input;
+using IPTVPlayer.Data;
 using IPTVPlayer.Models;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace IPTVPlayer.ViewModels
 {
     public class CanalViewModel
     {
+        public ICommand OnCanalSelectedCommand { get; }
+        public ICommand OnCanalLongSelectedCommand { get; }
         public ObservableCollection<Canal> Canais { get; set; }
 
         public CanalViewModel()
@@ -26,10 +30,11 @@ namespace IPTVPlayer.ViewModels
                 }
             }
         }
-        public Canal LoadCanais(int id)
+
+        public Canal LoadCanais(string url)
         {
             var db = DatabaseHelper.GetConnection();
-            var canais = db.Table<Canal>().Where(x=> x.Id == id).First();
+            var canais = db.Table<Canal>().Where(x=> x.UrlStream == url).First();
             return canais;
         }
         // Adiciona um novo canal ao banco de dados
