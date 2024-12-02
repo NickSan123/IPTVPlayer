@@ -26,7 +26,12 @@ namespace IPTVPlayer.ViewModels
                 }
             }
         }
-
+        public Canal LoadCanais(int id)
+        {
+            var db = DatabaseHelper.GetConnection();
+            var canais = db.Table<Canal>().Where(x=> x.Id == id).First();
+            return canais;
+        }
         // Adiciona um novo canal ao banco de dados
         public void AddCanal(Canal canal)
         {
@@ -48,6 +53,12 @@ namespace IPTVPlayer.ViewModels
             var db = DatabaseHelper.GetConnection();
             db.Delete(canal);
             Canais.Remove(canal);  // Atualiza a coleção na View
+        }
+
+        public void DeleteAll()
+        {
+            var db = DatabaseHelper.GetConnection();
+            db.DeleteAll<Canal>();
         }
     }
 }
