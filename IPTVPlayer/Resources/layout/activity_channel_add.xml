@@ -23,10 +23,14 @@
         android:layout_height="wrap_content"
         android:hint="URl da logo"/>
   <Button
-    android:id="@+id/bt_salvar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:onClick=""
-    android:text="Salvar"/>
+      android:id="@+id/bt_salvar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Salvar"/>
+  <Button
+      android:id="@+id/btnImportM3U"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Importar"/>
 
 </LinearLayout>

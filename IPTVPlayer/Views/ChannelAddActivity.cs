@@ -1,4 +1,9 @@
+using Android;
+using Android.Content;
+using Android.Content.PM;
 using Android.Views;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 using IPTVPlayer.Models;
 using IPTVPlayer.ViewModels;
 
@@ -16,6 +21,8 @@ public class ChannelAddActivity : Activity
     string canalNome ;
     string canalFoto;
     string canalUrl;
+    private Button btnImportM3U;
+    private const int RequestCode = 100;
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
@@ -26,6 +33,8 @@ public class ChannelAddActivity : Activity
         urlStreamEditText = FindViewById<EditText>(Resource.Id.url_stream_edittext);
         urlImagemEditText = FindViewById<EditText>(Resource.Id.url_imagem_edittext);
         btSalvar = FindViewById<Button>(Resource.Id.bt_salvar);
+        btnImportM3U = FindViewById<Button>(Resource.Id.btnImportM3U);
+        btnImportM3U.Click += BtnImportM3U_Click;
 
 
         // Obter os dados do canal a partir da Intent
@@ -53,6 +62,48 @@ public class ChannelAddActivity : Activity
             ActionBar.SetDisplayHomeAsUpEnabled(true);
         
     }
+
+    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+    {
+        base.OnActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RequestCode && resultCode == Result.Ok)
+        {
+            var uri = data.Data;
+            if (uri != null)
+            {
+                // Lê e processa o arquivo M3U
+                var m3uFilePath = uri.Path;
+                if (!string.IsNullOrEmpty(m3uFilePath))
+                {
+                    var import = new ParseM3U();
+                    var canais = import.ImportChannel(m3uFilePath);
+                    // Agora você pode exibir os canais ou salvar no banco de dados
+                    Toast.MakeText(this, $"{canais.Count} canais importados!", ToastLength.Short).Show();
+                }
+            }
+        }
+    }
+
+    private string GetFilePathFromUri(Android.Net.Uri uri)
+    {
+        string path = string.Empty;
+        try
+        {
+            var cursor = ContentResolver.Query(uri, null, null, null, null);
+            if (cursor != null && cursor.MoveToFirst())
+            {
+                int columnIndex = cursor.GetColumnIndex("_data");
+                path = cursor.GetString(columnIndex);
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.MakeText(this, "Erro ao obter caminho do arquivo", ToastLength.Short).Show();
+        }
+        return path;
+    }
+
     private void OnSaveButtonClick(object sender, System.EventArgs e)
     {
         var nomeCanal = nomeCanalEditText.Text;
@@ -93,6 +144,25 @@ public class ChannelAddActivity : Activity
     {
         MenuInflater.Inflate(Resource.Menu.menu_channel_edit, menu); // Inflando o menu
         return base.OnCreateOptionsMenu(menu);
+    }
+
+    private void BtnImportM3U_Click(object sender, System.EventArgs e)
+    {
+        if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != Permission.Granted)
+        {
+            ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage }, RequestCode);
+        }
+        else
+        {
+            
+        }
+        var intent = new Intent(Intent.ActionGetContent);
+        intent.SetType("*/*");  // Permitindo todos os tipos de arquivo
+        StartActivityForResult(Intent.CreateChooser(intent, "Selecione um arquivo"), RequestCode);
+
+
+
+
     }
     public override bool OnOptionsItemSelected(IMenuItem item)
     {
